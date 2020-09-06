@@ -1,0 +1,30 @@
+{% extends "users/layout.html" %}
+{%block title %}Quota{% endblock%}
+{% block body %}
+    <h1>Welcome, {{ request.user.first_name}}</h1>
+    <a href="{% url 'index' %}">Home</a>
+    <a href="{% url 'logout' %}">Logout</a>
+    <table>
+        <tr>
+            <th> Course Id </th>
+            <th> Course Name </th>
+            <th> Semester </th>
+            <th> Year </th>
+            <th> Remove </th>
+        </tr>
+        {% for course in courses %}
+            <tr>
+                <td>{{ course.course_id }}</td>
+                <td>{{ course.course_name }}</td>
+                <td>{{ course.course_sem }}</td>
+                <td>{{ course.course_year }}</td>
+                <td>
+                    <form action="{% url "remove_quota" %}" method="POST">
+                        {% csrf_token %}
+                        <button name="remove" type="submit" value="{{course.course_id}}">REMOVE</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
