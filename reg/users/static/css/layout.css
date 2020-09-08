@@ -1,0 +1,231 @@
+body {
+    margin:0px;
+    font-family: monospace;
+}
+
+.login{
+    background-color: #E5E5E5;
+    border-color: #FFFFFF;
+    border-radius:0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    width: 100vw;
+    min-height: 100vh;
+    background-image: url("/static/image/log-bg.png");
+    background-size: cover;
+}
+
+.login-container{
+    display: flex;
+    justify-content: center;
+    padding: 30px 10px;
+    background-color: #536D9C;
+    border-color: #536D9C;
+    width: 275px;
+    height: 220px;
+}
+
+.input-form{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.user, .pass{
+    padding: 10px;
+    margin: 10px 0px;
+    background-color: #FFFFFF;
+    border: 1px solid #E5E5E5;
+    border-radius: 4px;
+}
+
+.submit{
+    padding: 10px;
+    margin: 10px 0px;
+    background-color: #FFC353;
+    border-color: #FFC353;
+    border: #FFC353;
+    border-radius: 4px;
+    color: #FFFFFF;
+}
+.submit:hover{
+    color: #FFFFFF;
+    background-color: #DF214C;
+    border: 1px solid #DF214C;
+}
+
+div{
+    color: #3F966B;
+    background-color: #90EABD;
+    border: 1px solid #3F966B;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    padding: 10px 10px 10px 30px;
+
+}
+
+.bar-head{
+    padding: 5px 0px;
+    border-radius: 0px 0px 5px 5px;
+    background-color: #DF214C;
+    border-color: #DF214C;
+}
+
+h1 {
+    font-size: 36px;
+    font-family: monospace;
+    font-weight: lighter;
+    background-color: #2A4F95;
+    margin: 0;
+    padding: 20px 20px 5px 40px;
+    color: #FFFFFF;
+}
+
+h2{
+    font-family: monospace;
+    font-weight: lighter;
+    background-color: #2A4F95;
+    margin: 0;
+    padding: 0px 20px 20px 40px;
+    color: #ffc353;
+}
+
+.topnav-home{
+    display: grid;
+    grid-template-columns: 100px 100px auto 100px;
+    border-radius: 0px;
+    background-color: #E5E5E5;
+    border-color: #E5E5E5;
+    margin: 0px;
+    padding: 0px;
+    font-family: monospace;
+    color: #FFFFFF
+}
+.topnav-quota{
+    display: grid;
+    grid-template-columns: 100px 100px 100px;
+    border-radius: 0px;
+    background-color: #FFFFFF;
+    border-color: #FFFFFF;
+    margin: 0px;
+    padding: 0px;
+    font-family: monospace;
+    color: #FFFFFF
+}
+
+
+div .topnav-admin{
+    display: grid;
+    grid-template-columns: 100px 100px;
+}
+
+
+.search-container{
+    display: grid;
+    align-content: center;
+    border-radius: 0px;
+    background-color: #E5E5E5;
+    border-color: #E5E5E5;
+    margin: 0px;
+    padding: 5px 20px;
+}
+
+.search-container input[type=text] {
+    width: 85%;
+    border-radius: 4px;
+    padding: 4px;
+    font-size: 14px;
+    border: none;
+}
+
+.search-container button {
+    background: #E5E5E5;
+    font-size: 20px;
+    border: none;
+    cursor: pointer;
+}
+
+a{
+    padding: 10px 20px;
+    text-align: center;
+    color: #FFFFFF;
+    font-size: 18px;
+
+}
+
+a:link {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+a:nth-child(1){
+    background-color: #2A4F95;
+    border-bottom: 1px solid #2A4F95;
+
+}
+
+a:nth-child(2){
+    background-color: #DF214C;
+    border-bottom: 1px solid #DF214C;
+
+}
+
+a:last-child{
+    background-color: #ffc353;
+    border-bottom: 1px solid #ffc353;
+
+}
+
+table{
+    margin: auto;
+    font-family: monospace;
+    font-weight: lighter;
+    padding-top: 20px;
+
+}
+
+table th{
+    font-family: monospace;
+    font-weight: lighter;
+    font-size: 18px;
+    color: #FFFFFF;
+    background-color: #2A4F95;
+}
+
+table td{
+    color: #2A4F95;
+    font-size: 16px;
+}
+th, td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+td:nth-child(2){
+    text-align: left;
+}
+th:first-child{
+    border-radius: 5px 0px 0px 5px;
+}
+th:last-child{
+    border-radius: 0px 5px 5px 0px;
+}
+
+td button{
+    border: #DF214C;
+    border-radius: 4px;
+    color: #FFFFFF;
+    background-color: #DF214C;
+    padding: 3px 10px;
+
+}
+
+td button:hover{
+    color: #DF214C;
+    background-color: #FFFFFF;
+    border: 1px solid #DF214C;
+}

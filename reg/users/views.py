@@ -10,9 +10,11 @@ def index(request):
         return HttpResponseRedirect(reverse("login"))
     else :
         if not request.user.is_staff :
+            student = Student.objects.get(first_name=request.user.first_name)
             courses = Course.objects.all()
             return render(request, "users/index.html", {
-                 "courses" : courses
+                "courses" : courses,
+                "student" : student
             })
         else :
             return HttpResponseRedirect(reverse("admin"))
@@ -29,22 +31,32 @@ def login_view(request):
             else :
                 return HttpResponseRedirect(reverse("admin"))
         return render(request, "users/login.html", {
-            "message" : "Invalid Credential."
+            "message":"Invalid Credential."
         })
     return render(request, "users/login.html")
 
 def logout_view(request):
     logout(request)
     return render(request, "users/login.html", {
-        "message" : "Logged out."
+        "message":"Logged out."
     })
 
 def search(request):
     if request.method == "POST" :
         course_id = request.POST["course_id"].upper()
-        courses = Course.objects.filter(course_id=course_id)
+        if course_id == "*" :
+            courses = Course.objects.all()
+            print(courses)
+        else :
+            courses = Course.objects.filter(course_id__contains=course_id)
+            if len(courses) == 1 :
+                cc = [course for course in courses]
+                if cc[0].course_status == "close" :
+                    courses = ""
+        student = Student.objects.get(first_name=request.user.first_name)
     return render(request, "users/index.html",{
-            "courses" : courses
+            "courses" : courses,
+            "student" : student
         })
 
 def quota(request):
@@ -52,7 +64,8 @@ def quota(request):
         # print(user.member.all())
         student = Student.objects.get(first_name=request.user.first_name)
         return render(request, "users/quota.html", {
-            "courses" : student.course.all()
+            "courses" : student.course.all(),
+            "student" : student
         })
     else :
         return HttpResponseRedirect(reverse("admin"))
@@ -66,7 +79,7 @@ def add_quota(request) :
         else :
             count = Student.objects.filter(course=course).count()
             if count < int(course.course_total) :
-                student = Student.objects.get(first_name=request.user.first_name)
+                # student = Student.objects.get(first_name=request.user.first_name)
                 student.course.add(course)
                 message = "Successful Quota Request."
             else :
@@ -74,29 +87,33 @@ def add_quota(request) :
     courses = Course.objects.all()
     return render(request, "users/index.html",{
         "message" : message,
-        "courses" : courses
+        "courses" : courses,
+        "student" : student
     })
 
 def remove_quota(request) :
+    student = Student.objects.get(first_name=request.user.first_name)
     if request.method == "POST" :
         course = Course.objects.get(course_id=request.POST["remove"])
-        student = Student.objects.get(first_name=request.user.first_name)
         student.course.remove(course)
-    courses = Course.objects.all()
-    return render(request, "users/index.html",{
+    return render(request, "users/quota.html",{
         "message" : "Successful Remove Quota Request.",
-        "courses" : courses
+        "courses" : student.course.all(),
+        "student" : student
     })
 
 def admin(request) :
-    courses = Course.objects.all()
-    count = []
-    for course in courses :
-        cnt = Student.objects.filter(course=course).count()
-        count.append(cnt)
-    return render(request, "users/admin.html", {
-        "courses" : zip(courses,count)
-    })
+    if request.user.is_staff :
+        courses = Course.objects.all()
+        count = []
+        for course in courses :
+            cnt = Student.objects.filter(course=course).count()
+            count.append(cnt)
+        return render(request, "users/admin.html", {
+            "courses" : zip(courses,count)
+        })
+    else :
+        return HttpResponseRedirect(reverse("index"))
 
 def detail(request) :
     if request.method == "POST" :

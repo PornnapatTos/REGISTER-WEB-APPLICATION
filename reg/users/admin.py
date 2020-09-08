@@ -6,7 +6,7 @@ class CourseAdmin(admin.ModelAdmin):
     list_display = ("course_id","course_name","course_sem","course_year","course_total","course_status")
 
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ("student_id","first_name","last_name")
+    list_display = ("student_id","first_name","last_name","faculty")
 
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Student, StudentAdmin)

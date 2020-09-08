@@ -1,12 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <link rel="stylesheet" href="{% static 'css/layout.css' %}" type="text/css">
         <title>{%block title %}{% endblock%}</title>
     </head>
     <body>
-        {% if message %}
-        <div style="color:red">{{message}}</div>
-        {% endif %}
         {% block body %}
         {% endblock %}
     </body>
