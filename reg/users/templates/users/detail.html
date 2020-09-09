@@ -2,18 +2,29 @@
 {%block title %}Home{% endblock%}
 {% block body %}
     <h1>Welcome, {{request.user.username}}</h1>
-    <a href="{% url 'admin' %}">Home</a>  <a href="{% url 'logout' %}">Logout</a>
-    <h2>{{ course.course_id }} : {{ course.course_name }}</h2>
+    <div class="bar-head"></div>
+    {% if message %}
+        <div>{{message}}</div>
+    {% endif %}
+    <div class="detail">
+        <a href="{% url 'admin' %}">Home</a>
+        <p>{{ course.course_id }} : {{ course.course_name }}</p>
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
+
     <table>
         <tr>
             <th> Student Id </th>
             <th> Student Name </th>
+            <th> Faculty </th>
         </tr>
         {% for student in students %}
         <tr>
             <td>{{ student.student_id }}</td>
             <td>{{ student.first_name }} {{ student.last_name }}</td>
+            <td>{{ student.faculty }}</td>
         </tr>
         {% endfor %}
     </table>
+
 {% endblock %}

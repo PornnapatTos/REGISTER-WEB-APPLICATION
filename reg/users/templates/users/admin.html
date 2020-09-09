@@ -2,41 +2,50 @@
 {%block title %}Home{% endblock%}
 {% block body %}
     <h1>Welcome, {{request.user.username}}</h1>
+    <div class="bar-head"></div>
+    {% if message %}
+        <div>{{message}}</div>
+    {% endif %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <div class="topnav-admin">
         <div class="search-container">
-            <form action="{% url "search" %}" method="POST">
+            <form action="{% url "search_admin" %}" method="POST">
                 {% csrf_token %}
-                <input type="text" name="course_id">
-                <input type="submit" value="search">
+                <input type="text" placeholder="Search.." name="course_id">
+                <button type="submit" value="search"><i class="fa fa-search"></i></button>
             </form>
         </div>
         <a href="{% url 'logout' %}">Logout</a>
     </div>
-    <table>
-        <tr>
-            <th> Course Id </th>
-            <th> Course Name </th>
-            <th> Semester </th>
-            <th> Year </th>
-            <th> Total </th>
-            <th> status </th>
-            <th> Detail </th>
-        </tr>
-        {% for course,count in courses %}
+    {% if not courses %}
+            <h3>No Course</h3>
+    {% else %}
+        <table>
             <tr>
-                <td>{{ course.course_id }}</td>
-                <td>{{ course.course_name }}</td>
-                <td>{{ course.course_sem }}</td>
-                <td>{{ course.course_year }}</td>
-                <td>{{count}}/{{ course.course_total }}</td>
-                <td>{{ course.course_status }}</td>
-                <td>
-                    <form action="{% url "detail" %}" method="POST">
-                        {% csrf_token %}
-                        <button name="detail" type="submit" value="{{course.course_id}}">DETAIL</button>
-                    </form>
-                </td>
+                <th> Course Id </th>
+                <th> Course Name </th>
+                <th> Semester </th>
+                <th> Year </th>
+                <th> Total </th>
+                <th> status </th>
+                <th> Detail </th>
             </tr>
-        {% endfor %}
-    </table>
+            {% for course,count in courses %}
+                <tr>
+                    <td>{{ course.course_id }}</td>
+                    <td>{{ course.course_name }}</td>
+                    <td>{{ course.course_sem }}</td>
+                    <td>{{ course.course_year }}</td>
+                    <td>{{count}}/{{ course.course_total }}</td>
+                    <td>{{ course.course_status }}</td>
+                    <td>
+                        <form action="{% url "detail" %}" method="POST">
+                            {% csrf_token %}
+                            <button name="detail" type="submit" value="{{course.course_id}}">DETAIL</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
 {% endblock %}

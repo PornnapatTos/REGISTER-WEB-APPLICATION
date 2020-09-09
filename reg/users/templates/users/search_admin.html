@@ -1,56 +1,49 @@
 {% extends "users/layout.html" %}
 {%block title %}Home{% endblock%}
 {% block body %}
-    {% if student %}
-        <h1>{{ student.first_name }} {{ student.last_name }}</h1>
-        <h2>{{ student.student_id }} </h2>
-    {% else %}
-        <h1>Welcome, {{request.user.username}}</h1>
-    {% endif %}
+    <h1>Welcome, {{request.user.username}}</h1>
     <div class="bar-head"></div>
     {% if message %}
         <div>{{message}}</div>
     {% endif %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <div class="topnav-home">
-        <a href="{% url 'index' %}">Home</a>
-            <a href="{% url 'quota' %}">Quota</a>
+    <div class="topnav-admin">
         <div class="search-container">
-            <form action="{% url "search" %}" method="POST">
+            <form action="{% url "search_admin" %}" method="POST">
                 {% csrf_token %}
                 <input type="text" placeholder="Search.." name="course_id">
                 <button type="submit" value="search"><i class="fa fa-search"></i></button>
             </form>
         </div>
-        <a href="{% url 'logout' %}">Logout</a></li>
+        <a href="{% url 'logout' %}">Logout</a>
     </div>
-    {% if not courses %}
+    {% if total_course == 0 %}
         <h3>No Course</h3>
     {% else %}
         <table>
             <tr>
-                <th> Course ID </th>
+                <th> Course Id </th>
                 <th> Course Name </th>
                 <th> Semester </th>
                 <th> Year </th>
                 <th> Total </th>
                 <th> status </th>
+                <th> Detail </th>
             </tr>
-            {% for course in courses %}
+            {% for course,count in courses %}
                 <tr>
-                    {% if course.course_status == "open" %}
                     <td>{{ course.course_id }}</td>
                     <td>{{ course.course_name }}</td>
                     <td>{{ course.course_sem }}</td>
                     <td>{{ course.course_year }}</td>
-                    <td>{{ course.course_total }}</td>
+                    <td>{{count}}/{{ course.course_total }}</td>
+                    <td>{{ course.course_status }}</td>
                     <td>
-                        <form action="{% url "add_quota" %}" method="POST">
+                        <form action="{% url "detail" %}" method="POST">
                             {% csrf_token %}
-                            <button name="add" type="submit" value="{{course.course_id}}">ADD</button>
+                            <button name="detail" type="submit" value="{{course.course_id}}">DETAIL</button>
                         </form>
                     </td>
-                    {% endif %}
                 </tr>
             {% endfor %}
         </table>

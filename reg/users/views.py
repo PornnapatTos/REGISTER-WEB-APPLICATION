@@ -52,7 +52,8 @@ def search(request):
             if len(courses) == 1 :
                 cc = [course for course in courses]
                 if cc[0].course_status == "close" :
-                    courses = ""
+                    if not request.user.is_staff :
+                        courses = ""
         student = Student.objects.get(first_name=request.user.first_name)
     return render(request, "users/index.html",{
             "courses" : courses,
@@ -122,4 +123,22 @@ def detail(request) :
         return render(request, "users/detail.html", {
             "course" : course,
             "students" : students
+        })
+
+def search_admin(request):
+    if request.method == "POST" :
+        course_id = request.POST["course_id"].upper()
+        if course_id == "*" :
+            courses = Course.objects.all()
+            print(courses)
+        else :
+            courses = Course.objects.filter(course_id__contains=course_id)
+            print(len(courses))
+        count = []
+        for course in courses :
+            cnt = Student.objects.filter(course=course).count()
+            count.append(cnt)
+    return render(request, "users/search_admin.html",{
+            "courses" : zip(courses,count),
+            "total_course" : len(courses)
         })

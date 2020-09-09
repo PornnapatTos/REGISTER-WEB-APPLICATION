@@ -92,6 +92,17 @@ h2{
     color: #ffc353;
 }
 
+h3{
+    text-align: center;
+    background-color: #DF214C;
+    border-color: #DF214C;
+    border-bottom: 1px solid #DF214C;
+    color: #FFFFFF;
+    padding: 10px;
+    margin: 20px 500px;
+    border-radius: 4px;
+}
+
 .topnav-home{
     display: grid;
     grid-template-columns: 100px 100px auto 100px;
@@ -115,12 +126,35 @@ h2{
     color: #FFFFFF
 }
 
-
-div .topnav-admin{
+.topnav-admin{
     display: grid;
-    grid-template-columns: 100px 100px;
+    grid-template-columns: auto 100px;
+    background-color: #FFFFFF;
+    border-color: #FFFFFF;
+    margin: 0px;
+    padding: 0px;
 }
 
+.detail{
+    display: grid;
+    grid-template-columns: 100px auto 100px;
+    border-radius: 0px;
+    background-color: #FFFFFF;
+    border-color: #FFFFFF;
+    margin: 0px;
+    padding: 0px;
+}
+
+p{
+    background-color: #df214c;
+    border-color: #DF214C;
+    border-bottom: 1px solid #DF214C;
+    color: #FFFFFF;
+    padding: 10px 20px;
+    text-align: center;
+    margin: 0px;
+    font-size: 18px;
+}
 
 .search-container{
     display: grid;
@@ -163,18 +197,21 @@ a:hover {
 }
 a:nth-child(1){
     background-color: #2A4F95;
+    border-color: #2A4F95;
     border-bottom: 1px solid #2A4F95;
 
 }
 
 a:nth-child(2){
     background-color: #DF214C;
+    border-color: #DF214C;
     border-bottom: 1px solid #DF214C;
 
 }
 
 a:last-child{
     background-color: #ffc353;
+    border-color: #ffc353;
     border-bottom: 1px solid #ffc353;
 
 }
