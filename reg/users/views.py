@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from .models import Course, Student
+from django.contrib import admin as admin_r
 
 # Create your views here.
 def index(request):
@@ -142,3 +143,5 @@ def search_admin(request):
             "courses" : zip(courses,count),
             "total_course" : len(courses)
         })
+
+

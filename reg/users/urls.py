@@ -1,3 +1,4 @@
+from django.contrib import admin
 from django.urls import path
 from . import views
 
@@ -11,5 +12,5 @@ urlpatterns = [
     path('remove_quota', views.remove_quota, name='remove_quota'),
     path('admin', views.admin, name='admin'),
     path('detail', views.detail, name='detail'),
-    path('search_admin', views.search_admin, name='search_admin')
+    path('search_admin', views.search_admin, name='search_admin'),
 ]
