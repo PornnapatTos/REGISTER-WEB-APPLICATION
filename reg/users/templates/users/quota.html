@@ -5,7 +5,7 @@
     <h2>{{ student.student_id }} </h2>
     <div class="bar-head"></div>
     {% if message %}
-        <div>{{message}}</div>
+        <div>{{ message }}</div>
     {% endif %}
     <div class="topnav-quota">
         <a href="{% url 'index' %}">Home</a>
@@ -27,9 +27,9 @@
                 <td>{{ course.course_sem }}</td>
                 <td>{{ course.course_year }}</td>
                 <td>
-                    <form action="{% url "remove_quota" %}" method="POST">
+                    <form action="{% url 'remove_quota' %}" method="POST">
                         {% csrf_token %}
-                        <button name="remove" type="submit" value="{{course.course_id}}">REMOVE</button>
+                        <button name="remove" type="submit" value="{{ course.course_id }}">REMOVE</button>
                     </form>
                 </td>
             </tr>

@@ -3,7 +3,10 @@
 {% block body %}
     <div class="login">
         <div class="login-container">
-            <form action="{% url 'login'%}" method="POST" class="input-form" >
+            {% if message %}
+                <div class="alert-login">{{ message }}</div>
+            {% endif %}
+            <form action="{% url 'login' %}" method="POST" class="input-form" >
                 {% csrf_token %}
                 <input type="text" placeholder="user" name="username" class="user">
                 <input type="password" placeholder="password" name="password" class="pass">

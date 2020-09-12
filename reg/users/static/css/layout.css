@@ -18,18 +18,26 @@ body {
 }
 
 .login-container{
-    display: flex;
+    display: grid;
     justify-content: center;
-    padding: 30px 10px;
+    padding: 50px;
     background-color: #536D9C;
     border-color: #536D9C;
-    width: 275px;
-    height: 220px;
 }
 
 .input-form{
     display: flex;
     flex-direction: column;
+    padding: 0px;
+}
+
+.alert-login{
+    color: #FFFFFF;
+    margin: 0px;
+    background-color: #df214c5c;
+    border: 1px solid #df214c;
+    text-align: center;
+    align-self: center;
     padding: 10px;
 }
 

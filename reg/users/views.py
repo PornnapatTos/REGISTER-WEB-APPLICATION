@@ -32,116 +32,137 @@ def login_view(request):
             else :
                 return HttpResponseRedirect(reverse("admin"))
         return render(request, "users/login.html", {
-            "message":"Invalid Credential."
+            "message": "Invalid Credential."
         })
     return render(request, "users/login.html")
 
 def logout_view(request):
     logout(request)
     return render(request, "users/login.html", {
-        "message":"Logged out."
+        "message": "Logged out."
     })
 
 def search(request):
-    if request.method == "POST" :
-        course_id = request.POST["course_id"].upper()
-        if course_id == "*" :
-            courses = Course.objects.all()
-            print(courses)
+    if not request.user.is_authenticated :
+        return HttpResponseRedirect(reverse("login"))
+    else :
+        if request.method == "POST" :
+            course_id = request.POST["course_id"].upper()
+            if course_id == "*" :
+                courses = Course.objects.all()
+                print(courses)
+            else :
+                courses = Course.objects.filter(course_id__contains=course_id)
+                if len(courses) == 1 :
+                    cc = [course for course in courses]
+                    if cc[0].course_status == "close" :
+                        if not request.user.is_staff :
+                            courses = ""
+            student = Student.objects.get(first_name=request.user.first_name)
+        return render(request, "users/index.html",{
+                "courses" : courses,
+                "student" : student
+            })
+
+def quota(request):
+    if not request.user.is_authenticated :
+        return HttpResponseRedirect(reverse("login"))
+    else :
+        if not request.user.is_staff :
+            # print(user.member.all())
+            student = Student.objects.get(first_name=request.user.first_name)
+            return render(request, "users/quota.html", {
+                "courses" : student.course.all(),
+                "student" : student
+            })
         else :
-            courses = Course.objects.filter(course_id__contains=course_id)
-            if len(courses) == 1 :
-                cc = [course for course in courses]
-                if cc[0].course_status == "close" :
-                    if not request.user.is_staff :
-                        courses = ""
-        student = Student.objects.get(first_name=request.user.first_name)
-    return render(request, "users/index.html",{
+            return HttpResponseRedirect(reverse("admin"))
+
+def add_quota(request) :
+    if not request.user.is_authenticated :
+        return HttpResponseRedirect(reverse("login"))
+    else :
+        if request.method == "POST" :
+            course = Course.objects.get(course_id=request.POST["add"])
+            student = Student.objects.get(first_name=request.user.first_name)
+            if course in student.course.all() :
+                message = "you are already add this course."
+            else :
+                count = Student.objects.filter(course=course).count()
+                if count < int(course.course_total) :
+                    # student = Student.objects.get(first_name=request.user.first_name)
+                    student.course.add(course)
+                    message = "Successful Quota Request."
+                else :
+                    message = "Quota Request was Full."
+        courses = Course.objects.all()
+        return render(request, "users/index.html",{
+            "message" : message,
             "courses" : courses,
             "student" : student
         })
 
-def quota(request):
-    if not request.user.is_staff :
-        # print(user.member.all())
+def remove_quota(request) :
+    if not request.user.is_authenticated :
+        return HttpResponseRedirect(reverse("login"))
+    else :
         student = Student.objects.get(first_name=request.user.first_name)
-        return render(request, "users/quota.html", {
+        if request.method == "POST" :
+            course = Course.objects.get(course_id=request.POST["remove"])
+            student.course.remove(course)
+        return render(request, "users/quota.html",{
+            "message" : "Successful Remove Quota Request.",
             "courses" : student.course.all(),
             "student" : student
-        })
-    else :
-        return HttpResponseRedirect(reverse("admin"))
-
-def add_quota(request) :
-    if request.method == "POST" :
-        course = Course.objects.get(course_id=request.POST["add"])
-        student = Student.objects.get(first_name=request.user.first_name)
-        if course in student.course.all() :
-            message = "you are already add this course."
-        else :
-            count = Student.objects.filter(course=course).count()
-            if count < int(course.course_total) :
-                # student = Student.objects.get(first_name=request.user.first_name)
-                student.course.add(course)
-                message = "Successful Quota Request."
-            else :
-                message = "Quota Request was Full."
-    courses = Course.objects.all()
-    return render(request, "users/index.html",{
-        "message" : message,
-        "courses" : courses,
-        "student" : student
-    })
-
-def remove_quota(request) :
-    student = Student.objects.get(first_name=request.user.first_name)
-    if request.method == "POST" :
-        course = Course.objects.get(course_id=request.POST["remove"])
-        student.course.remove(course)
-    return render(request, "users/quota.html",{
-        "message" : "Successful Remove Quota Request.",
-        "courses" : student.course.all(),
-        "student" : student
     })
 
 def admin(request) :
-    if request.user.is_staff :
-        courses = Course.objects.all()
-        count = []
-        for course in courses :
-            cnt = Student.objects.filter(course=course).count()
-            count.append(cnt)
-        return render(request, "users/admin.html", {
-            "courses" : zip(courses,count)
-        })
+    if not request.user.is_authenticated :
+        return HttpResponseRedirect(reverse("login"))
     else :
-        return HttpResponseRedirect(reverse("index"))
+        if request.user.is_staff :
+            courses = Course.objects.all()
+            count = []
+            for course in courses :
+                cnt = Student.objects.filter(course=course).count()
+                count.append(cnt)
+            return render(request, "users/admin.html", {
+                "courses" : zip(courses,count)
+            })
+        else :
+            return HttpResponseRedirect(reverse("index"))
 
 def detail(request) :
-    if request.method == "POST" :
-        course = Course.objects.get(course_id=request.POST["detail"])
-        students = Student.objects.filter(course=course)
-        return render(request, "users/detail.html", {
-            "course" : course,
-            "students" : students
-        })
+    if not request.user.is_authenticated :
+        return HttpResponseRedirect(reverse("login"))
+    else :
+        if request.method == "POST" :
+            course = Course.objects.get(course_id=request.POST["detail"])
+            students = Student.objects.filter(course=course)
+            return render(request, "users/detail.html", {
+                "course" : course,
+                "students" : students
+            })
 
 def search_admin(request):
-    if request.method == "POST" :
-        course_id = request.POST["course_id"].upper()
-        if course_id == "*" :
-            courses = Course.objects.all()
-            print(courses)
-        else :
-            courses = Course.objects.filter(course_id__contains=course_id)
-            print(len(courses))
-        count = []
-        for course in courses :
-            cnt = Student.objects.filter(course=course).count()
-            count.append(cnt)
-    return render(request, "users/search_admin.html",{
-            "courses" : zip(courses,count),
-            "total_course" : len(courses)
-        })
+    if not request.user.is_authenticated :
+        return HttpResponseRedirect(reverse("login"))
+    else :
+        if request.method == "POST" :
+            course_id = request.POST["course_id"].upper()
+            if course_id == "*" :
+                courses = Course.objects.all()
+                print(courses)
+            else :
+                courses = Course.objects.filter(course_id__contains=course_id)
+                print(len(courses))
+            count = []
+            for course in courses :
+                cnt = Student.objects.filter(course=course).count()
+                count.append(cnt)
+        return render(request, "users/search_admin.html",{
+                "courses" : zip(courses,count),
+                "total_course" : len(courses)
+            })
 
 

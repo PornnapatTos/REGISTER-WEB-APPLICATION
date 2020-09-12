@@ -1,10 +1,10 @@
 {% extends "users/layout.html" %}
 {%block title %}Home{% endblock%}
 {% block body %}
-    <h1>Welcome, {{request.user.username}}</h1>
+    <h1>Welcome, {{ request.user.username }}</h1>
     <div class="bar-head"></div>
     {% if message %}
-        <div>{{message}}</div>
+        <div>{{ message }}</div>
     {% endif %}
     <div class="detail">
         <a href="{% url 'admin' %}">Home</a>
