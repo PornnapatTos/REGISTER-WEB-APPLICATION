@@ -136,33 +136,39 @@ def detail(request) :
     if not request.user.is_authenticated :
         return HttpResponseRedirect(reverse("login"))
     else :
-        if request.method == "POST" :
-            course = Course.objects.get(course_id=request.POST["detail"])
-            students = Student.objects.filter(course=course)
-            return render(request, "users/detail.html", {
-                "course" : course,
-                "students" : students
-            })
+        if request.user.is_staff :
+            if request.method == "POST" :
+                course = Course.objects.get(course_id=request.POST["detail"])
+                students = Student.objects.filter(course=course)
+                return render(request, "users/detail.html", {
+                    "course" : course,
+                    "students" : students
+                })
+        else :
+            return HttpResponseRedirect(reverse("index"))
 
 def search_admin(request):
     if not request.user.is_authenticated :
         return HttpResponseRedirect(reverse("login"))
     else :
-        if request.method == "POST" :
-            course_id = request.POST["course_id"].upper()
-            if course_id == "*" :
-                courses = Course.objects.all()
-                print(courses)
-            else :
-                courses = Course.objects.filter(course_id__contains=course_id)
-                print(len(courses))
-            count = []
-            for course in courses :
-                cnt = Student.objects.filter(course=course).count()
-                count.append(cnt)
-        return render(request, "users/search_admin.html",{
-                "courses" : zip(courses,count),
-                "total_course" : len(courses)
-            })
+        if request.user.is_staff :
+            if request.method == "POST" :
+                course_id = request.POST["course_id"].upper()
+                if course_id == "*" :
+                    courses = Course.objects.all()
+                    print(courses)
+                else :
+                    courses = Course.objects.filter(course_id__contains=course_id)
+                    print(len(courses))
+                count = []
+                for course in courses :
+                    cnt = Student.objects.filter(course=course).count()
+                    count.append(cnt)
+            return render(request, "users/search_admin.html",{
+                    "courses" : zip(courses,count),
+                    "total_course" : len(courses)
+                })
+        else :
+            return HttpResponseRedirect(reverse("index"))
 
 
