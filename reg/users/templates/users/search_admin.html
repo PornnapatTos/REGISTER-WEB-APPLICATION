@@ -8,6 +8,7 @@
     {% endif %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <div class="topnav-admin">
+        <a href="{% url 'admin' %}">Home</a>
         <div class="search-container">
             <form action="{% url 'search_admin' %}" method="POST">
                 {% csrf_token %}
