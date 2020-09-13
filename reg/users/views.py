@@ -48,7 +48,6 @@ def search(request):
             course_id = request.POST["course_id"].upper()
             if course_id == "*" :
                 courses = Course.objects.all()
-                print(courses)
             else :
                 courses = Course.objects.filter(course_id__contains=course_id)
                 if len(courses) == 1 :
@@ -67,7 +66,6 @@ def quota(request):
         return HttpResponseRedirect(reverse("login"))
     else :
         if not request.user.is_staff :
-            # print(user.member.all())
             student = Student.objects.get(first_name=request.user.first_name)
             return render(request, "users/quota.html", {
                 "courses" : student.course.all(),
@@ -154,10 +152,8 @@ def search_admin(request):
                 course_id = request.POST["course_id"].upper()
                 if course_id == "*" :
                     courses = Course.objects.all()
-                    print(courses)
                 else :
                     courses = Course.objects.filter(course_id__contains=course_id)
-                    print(len(courses))
                 count = []
                 for course in courses :
                     cnt = Student.objects.filter(course=course).count()
