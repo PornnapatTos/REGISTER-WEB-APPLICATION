@@ -139,7 +139,7 @@ h3{
 
 .topnav-admin{
     display: grid;
-    grid-template-columns: auto 100px;
+    grid-template-columns: 100px auto 100px;
     background-color: #FFFFFF;
     border-color: #FFFFFF;
     margin: 0px;
