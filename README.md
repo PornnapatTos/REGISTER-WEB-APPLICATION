@@ -26,5 +26,6 @@ Password : 1234
 
 ## การเข้าใช้งาน Django Interface
 สามารถเข้าถึงได้ผ่าน (url)/admin/
+
 Username : admin  
 Password : 1234
