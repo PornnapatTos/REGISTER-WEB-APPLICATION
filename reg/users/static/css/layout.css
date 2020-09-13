@@ -23,6 +23,7 @@ body {
     padding: 50px;
     background-color: #536D9C;
     border-color: #536D9C;
+    box-shadow: 0px 0px 15px grey;
 }
 
 .input-form{
@@ -101,8 +102,10 @@ h2{
 }
 
 h3{
+    font-family: monospace;
+    font-weight: lighter;
     text-align: center;
-    background-color: #DF214C;
+    background-color: #df214c5c;
     border-color: #DF214C;
     border-bottom: 1px solid #DF214C;
     color: #FFFFFF;

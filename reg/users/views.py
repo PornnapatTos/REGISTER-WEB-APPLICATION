@@ -38,9 +38,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return render(request, "users/login.html", {
-        "message": "Logged out."
-    })
+    return HttpResponseRedirect(reverse("index"))
 
 def search(request):
     if not request.user.is_authenticated :
