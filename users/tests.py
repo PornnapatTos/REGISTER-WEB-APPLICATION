@@ -93,3 +93,46 @@ class TestView(TestCase):
         response = self.client.post(self.index_url)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(self.redirect(response), "/admin")
+
+    def test_quota_1(self):
+        """ check in test_quota_1!! """
+        self.client.force_login(self.user1)
+        response = self.client.post(self.quota_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response , 'users/quota.html')
+        self.assertEqual(response.context["courses"].count(),0)
+        self.assertEqual(response.context["student"],self.s1)
+
+    def test_quota_2(self):
+        """ check in test_quota_2!! """
+        response = self.client.post(self.quota_url)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(self.redirect(response), "/login")
+
+    def test_quota_3(self):
+        """ check in test_quota_3!! """
+        self.client.force_login(self.user2)
+        response = self.client.post(self.quota_url)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(self.redirect(response), "/admin")
+
+    def test_admin_1(self):
+        """ check in test_admin_1!! """
+        response = self.client.post(self.admin_url)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(self.redirect(response), "/login")
+
+    def test_admin_2(self):
+        """ check in test_admin_2!! """
+        self.client.force_login(self.user1)
+        response = self.client.post(self.admin_url)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(self.redirect(response), "/")
+
+    def test_admin_3(self):
+        """ check in test_admin_3!! """
+        self.client.force_login(self.user2)
+        response = self.client.post(self.admin_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response , 'users/admin.html')
+        self.assertEqual(len(response.context["courses"]),4)

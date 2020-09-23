@@ -123,7 +123,7 @@ def admin(request) :
                 cnt = Student.objects.filter(course=course).count()
                 count.append(cnt)
             return render(request, "users/admin.html", {
-                "courses" : zip(courses,count)
+                "courses" : list(zip(courses,count))
             })
         else :
             return HttpResponseRedirect(reverse("index"))
