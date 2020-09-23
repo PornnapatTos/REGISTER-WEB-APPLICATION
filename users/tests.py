@@ -136,3 +136,88 @@ class TestView(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response , 'users/admin.html')
         self.assertEqual(len(response.context["courses"]),4)
+
+    def test_detail_1(self):
+        """ check in test_detail_1!! """
+        response = self.client.post(self.detail_url)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(self.redirect(response), "/login")
+
+    def test_detail_2(self):
+        """ check in test_detail_2!! """
+        self.client.force_login(self.user1)
+        response = self.client.post(self.detail_url,)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(self.redirect(response), "/")
+
+    def test_detail_3(self):
+        """ check in test_detail_3!!!! """
+        self.client.force_login(self.user2)
+        response = self.client.post(self.detail_url,{'detail':'CN001',})
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response , 'users/detail.html')
+        self.assertEqual(response.context["course"],self.c1)
+        self.assertEqual(response.context["students"].count(),0)
+
+    def test_add_quota_1(self):
+        """ check in test_add_quota_1!! """
+        s = Student.objects.get(student_id="6010610001")
+        c = Course.objects.get(course_id="CN002")
+        count = Student.objects.filter(course=c).count()
+        if c not in s.course.all() and (count < int(c.course_total)) and c.course_status=="open":
+            s.course.add(c)
+        self.assertEqual(s.course.count(), 1)
+
+    def test_add_quota_2(self):
+        """ check in test_add_quota_2 """
+        ss1 = Student.objects.get(student_id="6010610001")
+        ss2 = Student.objects.get(student_id="6010610002")
+        c = Course.objects.get(course_id="CN001")
+        count = Student.objects.filter(course=c).count()
+        if c not in ss1.course.all() and (count < int(c.course_total)) and c.course_status=="open":
+            ss1.course.add(c)
+        count = Student.objects.filter(course=c).count()
+        if c not in ss2.course.all() and (count < int(c.course_total)) and c.course_status=="open":
+            ss2.course.add(c)
+        self.assertEqual(ss1.course.count(), 1)
+        self.assertEqual(ss2.course.count(), 0)
+
+    def test_remove_quota_1(self):
+        """ check in test_remove_quota_1!! """
+        s = Student.objects.get(student_id="6010610001")
+        c = Course.objects.get(course_id="CN001")
+        s.course.add(c)
+        if c in s.course.all() :
+            s.course.remove(c)
+        self.assertEqual(s.course.count(), 0)
+
+    # search for student
+    def test_search_1(self):
+        """ check in test_search_1!! """
+        word = "CN"
+        course1 = Course.objects.filter(course_id__contains=word.upper(), course_status="open")
+        self.assertEqual(course1.count(), 2)
+
+    def test_search_2(self):
+        """ check in test_search_2 """
+        word = "001"
+        course2 = Course.objects.filter(course_id__contains=word.upper(), course_status="open")
+        self.assertEqual(course2.count(), 1)
+
+    def test_search_3(self):
+        """ check in test_search_3 """
+        word = "AT"
+        course3 = Course.objects.filter(course_id__contains=word.upper(), course_status="open")
+        self.assertEqual(course3.count(), 0)
+
+    def test_search_4(self):
+        """ check in test_search_4 """
+        word = "cn"
+        course4 = Course.objects.filter(course_id__contains=word.upper(), course_status="open")
+        self.assertEqual(course4.count(), 2)
+
+    def test_search_5(self):
+        """ check in test_search_5 """
+        word = "cN"
+        course5 = Course.objects.filter(course_id__contains=word.upper(), course_status="open")
+        self.assertEqual(course5.count(), 2)
