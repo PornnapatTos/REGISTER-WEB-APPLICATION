@@ -283,3 +283,18 @@ class TestView(TestCase):
         word = "cN"
         course5 = Course.objects.filter(course_id__contains=word.upper(), course_status="open")
         self.assertEqual(course5.count(), 2)
+
+    # กรณีที่ไม่ได้ล็อคอิน ไม่สามารถใช้แทปการค้นหาของนักศึกษาได้
+    def test_search_6(self):
+        """ check in test_search_6!! """
+        response = self.client.post(self.search_url)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(self.redirect(response), "/login")
+
+    # กรณีที่ล็อคอินเป็นแอดมิน ไม่สามารถใช้แทปการค้นหาของนักศึกษาได้
+    def test_search_7(self):
+        """ check in test_search_7!! """
+        self.client.force_login(self.user2)
+        response = self.client.post(self.search_url)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(self.redirect(response), "/admin")

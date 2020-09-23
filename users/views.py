@@ -44,22 +44,25 @@ def search(request):
     if not request.user.is_authenticated :
         return HttpResponseRedirect(reverse("login"))
     else :
-        if request.method == "POST" :
-            course_id = request.POST["course_id"].upper()
-            if course_id == "*" :
-                courses = Course.objects.all()
-            else :
-                courses = Course.objects.filter(course_id__contains=course_id)
-                if len(courses) == 1 :
-                    cc = [course for course in courses]
-                    if cc[0].course_status == "close" :
-                        if not request.user.is_staff :
-                            courses = ""
-            student = Student.objects.get(student_id=request.user)
-        return render(request, "users/index.html",{
-                "courses" : courses,
-                "student" : student
-            })
+        if not request.user.is_staff :
+            if request.method == "POST" :
+                course_id = request.POST["course_id"].upper()
+                if course_id == "*" :
+                    courses = Course.objects.all()
+                else :
+                    courses = Course.objects.filter(course_id__contains=course_id)
+                    if len(courses) == 1 :
+                        cc = [course for course in courses]
+                        if cc[0].course_status == "close" :
+                            if not request.user.is_staff :
+                                courses = ""
+                student = Student.objects.get(student_id=request.user)
+            return render(request, "users/index.html",{
+                    "courses" : courses,
+                    "student" : student
+                })
+        else :
+            return HttpResponseRedirect(reverse("admin"))
 
 def quota(request):
     if not request.user.is_authenticated :
