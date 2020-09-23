@@ -66,3 +66,30 @@ class TestView(TestCase):
         response = self.client.post(self.login_url,{'username':user,'password':'1234'})
         self.assertEqual(response.status_code, 302)
         self.assertEqual(self.redirect(response), "/admin")
+
+    def test_logout(self):
+        """ check in test_logout!! """
+        response = self.client.post(self.logout_url)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(self.redirect(response), "/")
+    def test_index_1(self):
+        """ check in test_index_1!! """
+        response = self.client.post(self.index_url)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(self.redirect(response), "/login")
+
+    def test_index_2(self):
+        """ check in test_index_2!! """
+        self.client.force_login(self.user1)
+        response = self.client.post(self.index_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response , 'users/index.html')
+        self.assertEqual(response.context["courses"].count(),4)
+        self.assertEqual(response.context["student"],self.s1)
+
+    def test_index_3(self):
+        """ check in test_index_3!! """
+        self.client.force_login(self.user2)
+        response = self.client.post(self.index_url)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(self.redirect(response), "/admin")

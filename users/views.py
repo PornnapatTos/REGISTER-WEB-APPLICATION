@@ -11,7 +11,7 @@ def index(request):
         return HttpResponseRedirect(reverse("login"))
     else :
         if not request.user.is_staff :
-            student = Student.objects.get(first_name=request.user.first_name)
+            student = Student.objects.get(student_id=request.user)
             courses = Course.objects.all()
             return render(request, "users/index.html", {
                 "courses" : courses,
@@ -55,7 +55,7 @@ def search(request):
                     if cc[0].course_status == "close" :
                         if not request.user.is_staff :
                             courses = ""
-            student = Student.objects.get(first_name=request.user.first_name)
+            student = Student.objects.get(student_id=request.user)
         return render(request, "users/index.html",{
                 "courses" : courses,
                 "student" : student
@@ -66,7 +66,7 @@ def quota(request):
         return HttpResponseRedirect(reverse("login"))
     else :
         if not request.user.is_staff :
-            student = Student.objects.get(first_name=request.user.first_name)
+            student = Student.objects.get(student_id=request.user)
             return render(request, "users/quota.html", {
                 "courses" : student.course.all(),
                 "student" : student
@@ -80,13 +80,13 @@ def add_quota(request) :
     else :
         if request.method == "POST" :
             course = Course.objects.get(course_id=request.POST["add"])
-            student = Student.objects.get(first_name=request.user.first_name)
+            student = Student.objects.get(student_id=request.user)
             if course in student.course.all() :
                 message = "you are already add this course."
             else :
                 count = Student.objects.filter(course=course).count()
                 if count < int(course.course_total) :
-                    # student = Student.objects.get(first_name=request.user.first_name)
+                    # student = Student.objects.get(student_id=request.user)
                     student.course.add(course)
                     message = "Successful Quota Request."
                 else :
@@ -102,7 +102,7 @@ def remove_quota(request) :
     if not request.user.is_authenticated :
         return HttpResponseRedirect(reverse("login"))
     else :
-        student = Student.objects.get(first_name=request.user.first_name)
+        student = Student.objects.get(student_id=request.user)
         if request.method == "POST" :
             course = Course.objects.get(course_id=request.POST["remove"])
             student.course.remove(course)
