@@ -42,11 +42,6 @@ def login_view(request):
     return render(request, "users/login.html")
 
 def logout_view(request):
-    if request.user.is_authenticated :
-        if not request.user.is_staff :
-            return HttpResponseRedirect(reverse("index"))
-        else :
-            return HttpResponseRedirect(reverse("admin"))
     logout(request)
     return HttpResponseRedirect(reverse("index"))
 
