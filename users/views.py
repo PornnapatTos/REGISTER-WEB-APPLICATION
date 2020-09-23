@@ -21,6 +21,11 @@ def index(request):
             return HttpResponseRedirect(reverse("admin"))
 
 def login_view(request):
+    if request.user.is_authenticated :
+        if not request.user.is_staff :
+            return HttpResponseRedirect(reverse("index"))
+        else :
+            return HttpResponseRedirect(reverse("admin"))
     if request.method == "POST" :
         username = request.POST["username"]
         password = request.POST["password"]
