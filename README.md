@@ -1,9 +1,7 @@
-# Assignment 1 & 2
-6010613468 พรนภัส ทศนุต
-
-6010613476 นภัสสร พิสุทธิ์ธาราชัย
-
-6010613583 กณวรรธน์ เหลืองอรุณโรจน์
+# Members
+1. Pornnapat Tossanuch
+2. Napassorn Pisuttharachai
+3. Ganawat Luengaroonroj
 
 ## URL HEROKU
 http://regtu.herokuapp.com
