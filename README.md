@@ -11,15 +11,15 @@ http://regtu.herokuapp.com
 ### การเข้าใช้งานเว็บไซต์การขอโควต้าแบบ User ทั่วไป 
 
 User คนที่ 1  
-Username : 6010613468  
+Username : user1  
 Password : aaa123456789
 
 User คนที่ 2  
-Username : 6010613476  
+Username : user2
 Password : aaa123456789  
   
 User คนที่ 3  
-Username : 6010613583  
+Username : user3  
 Password : aaa123456789  
 
 ### การเข้าใช้งานเว็บไซต์การขอโควต้าแบบ Admin 
