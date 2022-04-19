@@ -1,4 +1,4 @@
-# Members
+# Team Members
 1. Pornnapat Tossanuch
 2. Napassorn Pisuttharachai
 3. Ganawat Luengaroonroj
